@@ -3,6 +3,7 @@ package com.senselessweb.cradionative;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.senselessweb.cradionative.radio.Radio;
@@ -20,7 +21,8 @@ public class CRadioNativeActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.main);
-        this.radio = new Radio(this, (TextView) this.findViewById(R.id.display));
+        this.radio = new Radio(this, (TextView) this.findViewById(R.id.display), 
+        		(Button) this.findViewById(R.id.buttonTogglePlay));
     }
     
     /**

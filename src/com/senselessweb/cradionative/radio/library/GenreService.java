@@ -66,6 +66,12 @@ public class GenreService
 		return this.getCurrentGenreItems().get(this.itemPointer);
 	}
 	
+	public Item getCurrentIfAvailable()
+	{
+		return this.itemsByGenre.containsKey(this.getCurrentGenre()) ?
+				this.getCurrent() : null;
+	}
+	
 	public void nextGenre()
 	{
 		this.genrePointer++;

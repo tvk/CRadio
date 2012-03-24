@@ -11,6 +11,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.senselessweb.cradionative.radio.library.GenreService;
@@ -34,10 +35,15 @@ public class Radio implements OnPreparedListener
 	
 	private final TextView display;
 	
-	public Radio(final Activity activity, final TextView display)
+	private final Button togglePlayButton;
+	
+	private Item currentItem = null;
+	
+	public Radio(final Activity activity, final TextView display, final Button togglePlayButton)
 	{
 		this.activity = activity;
 		this.display = display;
+		this.togglePlayButton = togglePlayButton;
 		
 		this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		this.mediaPlayer.setOnPreparedListener(this);
@@ -46,14 +52,22 @@ public class Radio implements OnPreparedListener
 	public synchronized void togglePlayback()
 	{
 		if (this.mediaPlayer.isPlaying())
+		{
 			this.mediaPlayer.stop();
+			this.togglePlayButton.setText("Play");
+		}
 		
-		// TODO What about play?
+		else if (this.currentItem != null)
+		{
+			this.play(this.currentItem);
+			this.togglePlayButton.setText("Stop");			
+		}
 	}	
 
 	public synchronized void playPreset(final int preset)
 	{
-		this.play(this.presetsService.getPreset(preset));
+		final Item item = this.presetsService.getPreset(preset); 
+		if (item != null) this.play(item);
 	}
 	
 	public synchronized void nextGenre()
@@ -82,7 +96,8 @@ public class Radio implements OnPreparedListener
 	
 	private void playGenreItemAsync()
 	{
-		this.display.setText(this.genreService.getCurrentGenre());
+		final Item current = this.genreService.getCurrentIfAvailable();
+		this.display.setText(current != null ? current.getName() : this.genreService.getCurrentGenre());
 		this.display.setTextColor(Color.rgb(255, 165, 0));
 
 		if (this.currentGenreItemTask != null)
@@ -100,6 +115,8 @@ public class Radio implements OnPreparedListener
 	
 	private void play(final Item item)
 	{
+		this.currentItem = item;
+		
 		try
 		{
 			final Uri myUri = Uri.parse(item.getUrl());
@@ -112,7 +129,7 @@ public class Radio implements OnPreparedListener
 				@Override
 				public void run()
 				{
-					Radio.this.display.setText(Radio.this.genreService.getCurrent().getName());
+					Radio.this.display.setText(item.getName());
 					Radio.this.display.setTextColor(Color.rgb(255, 165, 0));
 				}
 			});
