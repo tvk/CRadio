@@ -93,6 +93,12 @@ public class Radio implements OnPreparedListener
 		this.genreService.previousStation();
 		this.playGenreItemAsync();
 	}
+
+	public void playGenre(String genre)
+	{
+		this.genreService.setGenre(genre);
+		this.play(this.genreService.getCurrent());
+	}
 	
 	private void playGenreItemAsync()
 	{
@@ -157,5 +163,6 @@ public class Radio implements OnPreparedListener
 			}
 		});
 	}
+
 
 }

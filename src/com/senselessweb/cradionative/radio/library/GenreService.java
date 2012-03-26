@@ -39,6 +39,9 @@ public class GenreService
 	
 	private int genrePointer = 0;
 	
+	/* If genre is set, it overrides the genre identified by the genrePointer */
+	private String genre = null;
+	
 	private final Map<String, List<Item>> itemsByGenre = new HashMap<String, List<Item>>();
 	
 	private int itemPointer = 0;
@@ -75,6 +78,7 @@ public class GenreService
 	public void nextGenre()
 	{
 		this.genrePointer++;
+		this.genre = null;
 		if (this.genrePointer >= this.genres.size()) this.genrePointer = 0;
 		this.itemPointer = 0;
 	}
@@ -82,6 +86,7 @@ public class GenreService
 	public void previousGenre()
 	{
 		this.genrePointer--;
+		this.genre = null;
 		if (this.genrePointer < 0) this.genrePointer = this.genres.size() - 1;
 		this.itemPointer = 0;
 	}
@@ -100,7 +105,7 @@ public class GenreService
 	
 	private List<Item> getCurrentGenreItems()
 	{
-		final String genre = this.genres.get(this.genrePointer);
+		final String genre = this.genre != null ? this.genre : this.genres.get(this.genrePointer);
 		if (!this.itemsByGenre.containsKey(genre))
 		{
 			this.loadGenreItems(genre);
@@ -142,5 +147,18 @@ public class GenreService
 	public String getCurrentGenre()
 	{
 		return this.genres.get(this.genrePointer);
+	}
+
+	public void setGenre(final String genre)
+	{
+		if (this.genres.contains(genre))
+		{
+			this.genrePointer = this.genres.indexOf(genre);
+			this.itemPointer = 0;
+		}
+		else
+		{
+			this.genre = genre;
+		}
 	}
 }
