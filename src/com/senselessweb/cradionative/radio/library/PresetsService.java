@@ -46,7 +46,7 @@ public class PresetsService
 	
 	public Item getPreset(final int preset)
 	{
-		return this.presets.get(preset - 1);
+		return preset <= this.presets.size() ? this.presets.get(preset - 1) : null;
 	}	
 	
 }

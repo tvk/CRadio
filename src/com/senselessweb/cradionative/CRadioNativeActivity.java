@@ -16,7 +16,7 @@ import com.senselessweb.cradionative.radio.Radio;
 public class CRadioNativeActivity extends Activity 
 {
 	
-	private Radio radio;
+	private Radio radio = null;
 	
     /** 
      * Called when the activity is first created. 
@@ -26,7 +26,8 @@ public class CRadioNativeActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.main);
-        this.radio = new Radio(this, (TextView) this.findViewById(R.id.display), 
+        if (this.radio == null)
+        	this.radio = new Radio(this, (TextView) this.findViewById(R.id.display), 
         		(Button) this.findViewById(R.id.buttonTogglePlay));
     }
     
@@ -77,7 +78,7 @@ public class CRadioNativeActivity extends Activity
     			this.radio.previousStation();
     			break;
     			
-    		case R.id.button1:
+    		case R.id.buttonRecogSpeech:
     			this.recognizeSpeech();
     			break;
     	}
