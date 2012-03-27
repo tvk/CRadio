@@ -160,6 +160,7 @@ public class Radio implements OnPreparedListener
 			public void run()
 			{
 				Radio.this.display.setTextColor(Color.WHITE);
+				Radio.this.togglePlayButton.setText("Stop");			
 			}
 		});
 	}
