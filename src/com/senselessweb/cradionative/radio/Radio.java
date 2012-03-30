@@ -49,6 +49,20 @@ public class Radio implements OnPreparedListener
 		this.mediaPlayer.setOnPreparedListener(this);
 	}
 	
+	public void onResume()
+	{
+		if (this.mediaPlayer.isPlaying())
+		{
+			this.togglePlayButton.setText("Stop");
+		}
+		
+		else if (this.currentItem != null)
+		{
+			this.play(this.currentItem);
+			this.togglePlayButton.setText("Play");			
+		}
+	}
+	
 	public synchronized void togglePlayback()
 	{
 		if (this.mediaPlayer.isPlaying())
@@ -165,5 +179,12 @@ public class Radio implements OnPreparedListener
 		});
 	}
 
-
+	public void stop()
+	{
+		if (this.mediaPlayer.isPlaying())
+			this.mediaPlayer.stop();
+		this.togglePlayButton.setText("Play");
+	}
 }
+
+

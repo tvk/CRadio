@@ -3,7 +3,10 @@ package com.senselessweb.cradionative;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
@@ -18,6 +21,8 @@ public class CRadioNativeActivity extends Activity
 	
 	private Radio radio = null;
 	
+	private BroadcastReceiver broadcastReceiver;
+	
     /** 
      * Called when the activity is first created. 
      */
@@ -26,9 +31,35 @@ public class CRadioNativeActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.main);
+        
+        this.broadcastReceiver = new BroadcastReceiver() {
+			
+			@Override
+			public void onReceive(final Context context, final Intent intent)
+			{
+				if (intent.getIntExtra("state", -1) == 0)
+					CRadioNativeActivity.this.radio.stop();
+			}
+		};
+        this.registerReceiver(this.broadcastReceiver, new IntentFilter(Intent.ACTION_HEADSET_PLUG));
+    }
+    
+    @Override
+    protected void onResume()
+    {
+    	super.onResume();
         if (this.radio == null)
         	this.radio = new Radio(this, (TextView) this.findViewById(R.id.display), 
         		(Button) this.findViewById(R.id.buttonTogglePlay));
+        else
+        	this.radio.onResume();
+    }
+    
+    @Override
+    protected void onDestroy()
+    {
+    	super.onDestroy();
+    	this.unregisterReceiver(this.broadcastReceiver);
     }
     
     /**
@@ -97,6 +128,8 @@ public class CRadioNativeActivity extends Activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+    	if (data == null) return;
+    	
     	final ArrayList<String> matches = data.getStringArrayListExtra(
                 RecognizerIntent.EXTRA_RESULTS);
     	if (!matches.isEmpty())

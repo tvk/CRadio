@@ -22,19 +22,21 @@ import org.jsoup.nodes.Element;
 
 import android.util.Log;
 
-import com.google.common.collect.Lists;
-
 public class GenreService
 {
 	private static final String genresLocation = "http://v-serv.dyndns.org/remote-radio/genres.txt";
 	
 	private static final String shoutcastRequestUrl = "http://www.shoutcast.com/search-ajax/";
 
-	private static final List<NameValuePair> parameters = Lists.<NameValuePair>newArrayList(
-			new BasicNameValuePair("count", "15"),
-			new BasicNameValuePair("mode", "listenershead2"),
-			new BasicNameValuePair("order", "desc2"));
-
+	private static final List<NameValuePair> parameters = new ArrayList<NameValuePair>(); 
+	
+	static
+	{
+		parameters.add(new BasicNameValuePair("count", "15"));
+		parameters.add(new BasicNameValuePair("mode", "listenershead2"));
+		parameters.add(new BasicNameValuePair("order", "desc2"));
+	}
+	
 	private final List<String> genres = new ArrayList<String>();
 	
 	private int genrePointer = 0;
