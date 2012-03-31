@@ -10,6 +10,9 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -31,7 +34,6 @@ public class CRadioNativeActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.main);
-        
         this.broadcastReceiver = new BroadcastReceiver() {
 			
 			@Override
@@ -113,6 +115,29 @@ public class CRadioNativeActivity extends Activity
     			this.recognizeSpeech();
     			break;
     	}
+    }
+    
+
+    @Override
+    public boolean onCreateOptionsMenu(final Menu menu) 
+    {
+        final MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+    	switch (item.getItemId())
+    	{
+    		case R.id.menuItemExit: 
+    			this.finish();
+    			break;
+    	}
+    	
+    	return true;
     }
     
     private void recognizeSpeech()

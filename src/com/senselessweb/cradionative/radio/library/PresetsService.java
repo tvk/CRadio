@@ -3,6 +3,7 @@ package com.senselessweb.cradionative.radio.library;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -21,9 +22,21 @@ public class PresetsService
 	
 	public PresetsService() 
 	{
+		this.presets = new ArrayList<Item>();
+		Executors.newFixedThreadPool(1).execute(new Runnable() {
+			
+			@Override
+			public void run()
+			{
+				PresetsService.this.init();
+			}
+		});
+	}
+	
+	private synchronized void init()
+	{
 		try
 		{
-			this.presets = new ArrayList<Item>();
 			final XPath xpath = XPathFactory.newInstance().newXPath();
 			final InputSource inputSource = new InputSource(
 					new URL(presetsXmlLocation).openConnection().getInputStream());
@@ -35,7 +48,8 @@ public class PresetsService
 				this.presets.add(new Item(
 						preset.getAttributes().getNamedItem("name").getNodeValue(),
 						preset.getAttributes().getNamedItem("src").getNodeValue(),
-						Boolean.valueOf(preset.getAttributes().getNamedItem("isPlaylist").getNodeValue())));
+						preset.getAttributes().getNamedItem("isPlaylist") == null ? false :
+							Boolean.valueOf(preset.getAttributes().getNamedItem("isPlaylist").getNodeValue())));
 			}
 		}
 		catch (final Exception e)
@@ -44,7 +58,7 @@ public class PresetsService
 		}
 	}
 	
-	public Item getPreset(final int preset)
+	public synchronized Item getPreset(final int preset)
 	{
 		return preset <= this.presets.size() ? this.presets.get(preset - 1) : null;
 	}	
