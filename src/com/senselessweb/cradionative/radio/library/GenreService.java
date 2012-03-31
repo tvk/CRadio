@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -36,7 +37,9 @@ public class GenreService
 		parameters.add(new BasicNameValuePair("mode", "listenershead2"));
 		parameters.add(new BasicNameValuePair("order", "desc2"));
 	}
-	
+
+	final HttpClient client = new DefaultHttpClient();
+
 	private final List<String> genres = new ArrayList<String>();
 	
 	private int genrePointer = 0;
@@ -48,6 +51,8 @@ public class GenreService
 	
 	private int itemPointer = 0;
 	
+	
+	
 	public GenreService()
 	{
 		try
@@ -58,26 +63,36 @@ public class GenreService
 			for (String line = reader.readLine(); line != null; line = reader.readLine())
 				this.genres.add(line);
 			Log.d(GenreService.class.toString(), "Loaded " + this.genres.size() + " genres");
-			this.loadGenreItems(this.genres.get(0));
+			
+			Executors.newFixedThreadPool(1).execute(new Runnable() {
+				
+				@Override
+				public void run()
+				{
+					GenreService.this.loadGenreItems(GenreService.this.genres.get(0));
+				}
+			});
 		}
 		catch (final Exception e)
 		{
 			throw new RuntimeException(e);
 		}
 	}
+	
+	
 
-	public Item getCurrent()
+	public synchronized Item getCurrent()
 	{
 		return this.getCurrentGenreItems().get(this.itemPointer);
 	}
 	
-	public Item getCurrentIfAvailable()
+	public synchronized Item getCurrentIfAvailable()
 	{
 		return this.itemsByGenre.containsKey(this.getCurrentGenre()) ?
 				this.getCurrent() : null;
 	}
 	
-	public void nextGenre()
+	public synchronized void nextGenre()
 	{
 		this.genrePointer++;
 		this.genre = null;
@@ -85,7 +100,7 @@ public class GenreService
 		this.itemPointer = 0;
 	}
 	
-	public void previousGenre()
+	public synchronized void previousGenre()
 	{
 		this.genrePointer--;
 		this.genre = null;
@@ -93,19 +108,19 @@ public class GenreService
 		this.itemPointer = 0;
 	}
 	
-	public void nextStation()
+	public synchronized void nextStation()
 	{
 		this.itemPointer++;
 		if (this.itemPointer >= this.getCurrentGenreItems().size()) this.itemPointer = 0;
 	}
 	
-	public void previousStation()
+	public synchronized void previousStation()
 	{
 		this.itemPointer--;
 		if (this.itemPointer < 0) this.itemPointer = this.getCurrentGenreItems().size() - 1;
 	}
 	
-	private List<Item> getCurrentGenreItems()
+	private synchronized List<Item> getCurrentGenreItems()
 	{
 		final String genre = this.genre != null ? this.genre : this.genres.get(this.genrePointer);
 		if (!this.itemsByGenre.containsKey(genre))
@@ -116,17 +131,16 @@ public class GenreService
 		return this.itemsByGenre.get(genre);
 	}
 	
-	private void loadGenreItems(final String genre)
+	private synchronized void loadGenreItems(final String genre)
 	{
 		Log.d(GenreService.class.toString(), "Loading items for " + genre);
 		try
 		{
 			// Send the request
-			final HttpClient client = new DefaultHttpClient();
 			final HttpPost post = new HttpPost(shoutcastRequestUrl + URLEncoder.encode(genre));
 			post.setEntity(new UrlEncodedFormEntity(parameters));
 			
-			final String response = client.execute(post, new BasicResponseHandler());
+			final String response = this.client.execute(post, new BasicResponseHandler());
 		
 			// Parse the response
 			final Document document = Jsoup.parse(response);
@@ -146,12 +160,12 @@ public class GenreService
 		}
 	}
 
-	public String getCurrentGenre()
+	public synchronized String getCurrentGenre()
 	{
 		return this.genres.get(this.genrePointer);
 	}
 
-	public void setGenre(final String genre)
+	public synchronized void setGenre(final String genre)
 	{
 		if (this.genres.contains(genre))
 		{
