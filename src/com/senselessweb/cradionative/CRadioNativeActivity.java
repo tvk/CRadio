@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.util.Log;
@@ -14,8 +15,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import com.senselessweb.cradionative.radio.Radio;
 
@@ -33,13 +32,18 @@ public class CRadioNativeActivity extends Activity
     public void onCreate(final Bundle savedInstanceState) 
     {
         super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.main);
+        
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+        	this.setContentView(R.layout.main_horizontal);
+        else
+        	this.setContentView(R.layout.main_vertical);
+        
         this.broadcastReceiver = new BroadcastReceiver() {
 			
 			@Override
 			public void onReceive(final Context context, final Intent intent)
 			{
-				if (intent.getIntExtra("state", -1) == 0)
+				if (!this.isInitialStickyBroadcast() && intent.getIntExtra("state", -1) == 0)
 					CRadioNativeActivity.this.radio.stop();
 			}
 		};
@@ -51,17 +55,27 @@ public class CRadioNativeActivity extends Activity
     {
     	super.onResume();
         if (this.radio == null)
-        	this.radio = new Radio(this, (TextView) this.findViewById(R.id.display), 
-        		(Button) this.findViewById(R.id.buttonTogglePlay));
+        	this.radio = new Radio(this);
         else
         	this.radio.onResume();
     }
-    
+
     @Override
     protected void onDestroy()
     {
     	super.onDestroy();
     	this.unregisterReceiver(this.broadcastReceiver);
+    }
+    
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+    	super.onConfigurationChanged(newConfig);
+
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) 
+            this.setContentView(R.layout.main_horizontal);
+        else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
+            this.setContentView(R.layout.main_vertical);
     }
     
     /**

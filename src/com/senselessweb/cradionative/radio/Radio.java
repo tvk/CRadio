@@ -9,16 +9,19 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.senselessweb.cradionative.R;
 import com.senselessweb.cradionative.radio.library.GenreService;
 import com.senselessweb.cradionative.radio.library.Item;
 import com.senselessweb.cradionative.radio.library.PresetsService;
 
-public class Radio implements OnPreparedListener
+public class Radio implements OnPreparedListener, OnErrorListener
 {
 	
 	private final GenreService genreService = new GenreService();
@@ -33,31 +36,27 @@ public class Radio implements OnPreparedListener
 
 	private final Activity activity;
 	
-	private final TextView display;
-	
-	private final Button togglePlayButton;
 	
 	private Item currentItem = null;
 	
-	public Radio(final Activity activity, final TextView display, final Button togglePlayButton)
+	public Radio(final Activity activity)
 	{
 		this.activity = activity;
-		this.display = display;
-		this.togglePlayButton = togglePlayButton;
 		
 		this.mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		this.mediaPlayer.setOnPreparedListener(this);
+		this.mediaPlayer.setOnErrorListener(this);
 	}
 	
 	public void onResume()
 	{
 		if (this.currentItem != null)
-			this.display.setText(this.currentItem.getName());
+			this.getDisplay().setText(this.currentItem.getName());
 		
 		if (this.mediaPlayer.isPlaying())
-			this.togglePlayButton.setText("Stop");
+			this.getTogglePlayButton().setText("Stop");
 		else if (this.currentItem != null)
-			this.togglePlayButton.setText("Play");			
+			this.getTogglePlayButton().setText("Play");			
 	}
 	
 	public synchronized void togglePlayback()
@@ -65,13 +64,13 @@ public class Radio implements OnPreparedListener
 		if (this.mediaPlayer.isPlaying())
 		{
 			this.mediaPlayer.stop();
-			this.togglePlayButton.setText("Play");
+			this.getTogglePlayButton().setText("Play");
 		}
 		
 		else if (this.currentItem != null)
 		{
 			this.play(this.currentItem);
-			this.togglePlayButton.setText("Stop");			
+			this.getTogglePlayButton().setText("Stop");			
 		}
 	}	
 
@@ -114,8 +113,8 @@ public class Radio implements OnPreparedListener
 	private void playGenreItemAsync()
 	{
 		final Item current = this.genreService.getCurrentIfAvailable();
-		this.display.setText(current != null ? current.getName() : this.genreService.getCurrentGenre());
-		this.display.setTextColor(Color.rgb(255, 165, 0));
+		this.getDisplay().setText(current != null ? current.getName() : this.genreService.getCurrentGenre());
+		this.getDisplay().setTextColor(Color.rgb(255, 165, 0));
 
 		if (this.currentGenreItemTask != null)
 			this.currentGenreItemTask.cancel(false);
@@ -146,8 +145,9 @@ public class Radio implements OnPreparedListener
 				@Override
 				public void run()
 				{
-					Radio.this.display.setText(item.getName());
-					Radio.this.display.setTextColor(Color.rgb(255, 165, 0));
+					Toast.makeText(Radio.this.activity, "Buffering " + myUri, Toast.LENGTH_LONG).show();
+					Radio.this.getDisplay().setText(item.getName());
+					Radio.this.getDisplay().setTextColor(Color.rgb(255, 165, 0));
 				}
 			});
 			
@@ -170,8 +170,8 @@ public class Radio implements OnPreparedListener
 			@Override
 			public void run()
 			{
-				Radio.this.display.setTextColor(Color.WHITE);
-				Radio.this.togglePlayButton.setText("Stop");			
+				Radio.this.getDisplay().setTextColor(Color.WHITE);
+				Radio.this.getTogglePlayButton().setText("Stop");			
 			}
 		});
 	}
@@ -180,7 +180,24 @@ public class Radio implements OnPreparedListener
 	{
 		if (this.mediaPlayer.isPlaying())
 			this.mediaPlayer.stop();
-		this.togglePlayButton.setText("Play");
+		this.getTogglePlayButton().setText("Play");
+	}
+	
+	@Override
+	public boolean onError(MediaPlayer mp, int what, int extra)
+	{
+		Toast.makeText(this.activity, "MediaPlayer error code: " + what + ", " + extra, Toast.LENGTH_LONG).show();
+		return false;
+	}
+	
+	private TextView getDisplay()
+	{
+		return (TextView) this.activity.findViewById(R.id.display);
+	}
+	
+	private Button getTogglePlayButton()
+	{
+		return (Button) this.activity.findViewById(R.id.buttonTogglePlay);		
 	}
 }
 

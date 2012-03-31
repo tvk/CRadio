@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/carbon"
+    android:orientation="vertical" >
+
+<!--     	Top column for the display and the stop/play button   -->
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" >
+
+        <TextView
+            android:id="@+id/display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="16dp"
+            android:layout_toLeftOf="@+id/buttonTogglePlay"
+            android:background="@drawable/display_background"
+            android:gravity="center"
+            android:lines="1"
+            android:padding="4dp"
+            android:text="-=- CRadio -=-"
+            android:typeface="monospace" />
+
+        <Button
+            android:id="@+id/buttonTogglePlay"
+            android:layout_width="75dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+            android:onClick="onClick"
+            android:text="Stop" />
+        
+    </RelativeLayout>
+
+    
+	<!--   	
+		Main column that defines the entire controls   
+	-->
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp" >
+
+		<!-- 	    	
+			Up/Down Buttons for the next or previous genre  
+		-->
+
+        <ImageButton
+            android:id="@+id/buttonGenreUp"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:background="#0000"
+            android:onClick="onClick"
+            android:scaleType="fitXY"
+            android:src="@drawable/button_up_selector" />
+
+        <ImageButton
+            android:id="@+id/buttonGenreDown"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_alignLeft="@+id/buttonGenreUp"
+            android:layout_below="@+id/buttonGenreUp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="0dp"
+            android:background="#0000"
+            android:onClick="onClick"
+            android:scaleType="fitXY"
+            android:src="@drawable/button_down_selector" />
+
+        
+		<!-- 	    	
+			Up/Down Buttons for the next or previous station  
+		-->
+
+        <ImageButton
+            android:id="@+id/buttonStationUp"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_alignBaseline="@+id/buttonGenreUp"
+            android:layout_alignBottom="@+id/buttonGenreUp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:background="#0000"
+            android:onClick="onClick"
+            android:scaleType="fitXY"
+            android:src="@drawable/button_up_selector" />
+
+        <ImageButton
+            android:id="@+id/buttonStationDown"
+            android:layout_width="120dp"
+            android:layout_height="60dp"
+            android:layout_alignLeft="@+id/buttonStationUp"
+            android:layout_alignTop="@+id/buttonGenreDown"
+            android:background="#0000"
+            android:onClick="onClick"
+            android:scaleType="fitXY"
+            android:src="@drawable/button_down_selector" />
+
+
+    </RelativeLayout>
+
+    <!--
+    	Table layout that contains all the presets 
+    -->
+    
+    <TableLayout
+        android:id="@+id/tableLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_below="@+id/relativeLayout1" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <ImageButton
+                android:id="@+id/buttonStation1"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="#0000"
+                android:onClick="onClick"
+                android:scaleType="fitXY"
+                android:src="@drawable/button_1_selector" />
+
+            <ImageButton
+                android:id="@+id/buttonStation2"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="#0000"
+                android:onClick="onClick"
+                android:scaleType="fitXY"
+                android:src="@drawable/button_2_selector" />
+
+            <ImageButton
+                android:id="@+id/buttonStation3"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="#0000"
+                android:onClick="onClick"
+                android:scaleType="fitXY"
+                android:src="@drawable/button_3_selector" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <ImageButton
+                android:id="@+id/buttonStation4"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="#0000"
+                android:onClick="onClick"
+                android:scaleType="fitXY"
+                android:src="@drawable/button_4_selector" />
+
+            <ImageButton
+                android:id="@+id/buttonStation5"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="#0000"
+                android:onClick="onClick"
+                android:scaleType="fitXY"
+                android:src="@drawable/button_5_selector" />
+
+            <ImageButton
+                android:id="@+id/buttonStation6"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:background="#0000"
+                android:onClick="onClick"
+                android:scaleType="fitXY"
+                android:src="@drawable/button_6_selector" />
+        </TableRow>
+        
+    </TableLayout>
+
+    
+    <!--
+    	Recognize speech button 
+    -->
+    
+    <ImageButton
+        android:id="@+id/buttonRecogSpeech"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="#0000"
+        android:onClick="onClick"
+        android:scaleType="fitXY"
+        android:src="@drawable/microphone" />
+
+    
+</RelativeLayout>    

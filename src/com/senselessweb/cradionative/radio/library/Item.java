@@ -54,10 +54,18 @@ public class Item
 		final BufferedReader reader = new BufferedReader(new InputStreamReader(
 				new URL(src).openConnection().getInputStream()));
 		String result = null;
-		for (String line = reader.readLine(); line != null && result == null; line = reader.readLine())
+		for (String line = reader.readLine(); line != null; line = reader.readLine())
 		{
+			// In m3u files, the uri is just the first line
+			if (result == null)
+				result = line;
+			
+			// Otherwise it is the first line that starts with "File="
 			if (line.startsWith("File")) 
+			{
 				result = line.substring(line.indexOf("=") + 1);
+				break;
+			}
 		}
 		try
 		{
