@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="abstractButton">
+		<item name="android:background">#0000</item>
+		<item name="android:scaleType">fitXY</item>
+        <item name="android:onClick">onClick</item>
+    </style>
+    
+    
+    <!--
+    	Preset buttons 
+    -->
+    <style name="presetButton" parent="@style/abstractButton">
+        <item name="android:layout_width">80dp</item>
+        <item name="android:layout_height">80dp</item>
+    </style>
+
+    
+    <!--
+    	Up/Down Buttons 
+    -->
+    <style name="abstractUpDownButton" parent="@style/abstractButton">
+        <item name="android:layout_width">120dp</item>
+        <item name="android:layout_height">60dp</item>
+    </style>
+    
+    <style name="upButton" parent="@style/abstractUpDownButton">
+        <item name="android:src">@drawable/button_up_selector</item>
+    </style>
+    
+    <style name="downButton" parent="@style/abstractUpDownButton">
+        <item name="android:src">@drawable/button_down_selector</item>
+    </style>
+    
+    
+    <!--
+    	Recognize speech button 
+    -->
+    <style name="recognizeSpeechButton" parent="@style/abstractButton">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:src">@drawable/microphone</item>
+    </style>
+    
+</resources>

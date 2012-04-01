@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="hello">Hello World, CRadioNativeActivity!</string>
-    <string name="app_name">CRadioNative</string>
+    <string name="app_name">CRadio</string>
 
+    <string name="app_welcome">-=- CRadio -=-</string>
+    <string name="app_stop">Stop</string>
+
+    <string name="app_preset_button_1">Preset button 1</string>
+    <string name="app_preset_button_2">Preset button 2</string>
+    <string name="app_preset_button_3">Preset button 3</string>
+    <string name="app_preset_button_4">Preset button 4</string>
+    <string name="app_preset_button_5">Preset button 5</string>
+    <string name="app_preset_button_6">Preset button 6</string>
+    
+    <string name="app_genre_up">Next genre</string>
+    <string name="app_genre_down">Previous genre</string>
+
+    <string name="app_station_up">Next station</string>
+    <string name="app_station_down">Previous station</string>
+
+    <string name="app_recognize_speech">Previous station</string>
+    
 </resources>
