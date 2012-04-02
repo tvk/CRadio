@@ -76,6 +76,8 @@ public class CRadioNativeActivity extends Activity
             this.setContentView(R.layout.main_horizontal);
         else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT)
             this.setContentView(R.layout.main_vertical);
+        
+        this.radio.onResume();
     }
     
     /**

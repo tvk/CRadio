@@ -12,7 +12,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnErrorListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,9 +54,9 @@ public class Radio implements OnPreparedListener, OnErrorListener
 			this.getDisplay().setText(this.currentItem.getName());
 		
 		if (this.mediaPlayer.isPlaying())
-			this.getTogglePlayButton().setText("Stop");
+			this.getTogglePlayButton().setImageResource(R.drawable.btn_stop);
 		else if (this.currentItem != null)
-			this.getTogglePlayButton().setText("Play");			
+			this.getTogglePlayButton().setImageResource(R.drawable.btn_play);		
 	}
 	
 	public synchronized void togglePlayback()
@@ -64,13 +64,13 @@ public class Radio implements OnPreparedListener, OnErrorListener
 		if (this.mediaPlayer.isPlaying())
 		{
 			this.mediaPlayer.stop();
-			this.getTogglePlayButton().setText("Play");
+			this.getTogglePlayButton().setImageResource(R.drawable.btn_play);
 		}
 		
 		else if (this.currentItem != null)
 		{
 			this.play(this.currentItem);
-			this.getTogglePlayButton().setText("Stop");			
+			this.getTogglePlayButton().setImageResource(R.drawable.btn_stop);			
 		}
 	}	
 
@@ -171,7 +171,7 @@ public class Radio implements OnPreparedListener, OnErrorListener
 			public void run()
 			{
 				Radio.this.getDisplay().setTextColor(Color.WHITE);
-				Radio.this.getTogglePlayButton().setText("Stop");			
+				Radio.this.getTogglePlayButton().setImageResource(R.drawable.btn_stop);			
 			}
 		});
 	}
@@ -180,7 +180,7 @@ public class Radio implements OnPreparedListener, OnErrorListener
 	{
 		if (this.mediaPlayer.isPlaying())
 			this.mediaPlayer.stop();
-		this.getTogglePlayButton().setText("Play");
+		this.getTogglePlayButton().setImageResource(R.drawable.btn_stop);
 	}
 	
 	@Override
@@ -195,9 +195,9 @@ public class Radio implements OnPreparedListener, OnErrorListener
 		return (TextView) this.activity.findViewById(R.id.display);
 	}
 	
-	private Button getTogglePlayButton()
+	private ImageButton getTogglePlayButton()
 	{
-		return (Button) this.activity.findViewById(R.id.buttonTogglePlay);		
+		return (ImageButton) this.activity.findViewById(R.id.buttonTogglePlay);		
 	}
 }
 

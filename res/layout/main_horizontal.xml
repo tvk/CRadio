@@ -22,7 +22,6 @@
             android:layout_alignParentLeft="true"
             android:layout_marginTop="16dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
             android:layout_toLeftOf="@+id/buttonTogglePlay"
             android:padding="4dp"
             android:gravity="center"
@@ -30,16 +29,13 @@
             android:typeface="monospace"
             android:text="@string/app_welcome" />
 
-        <Button
+        <ImageButton style="@style/stopButton"
             android:id="@+id/buttonTogglePlay"
-            android:layout_width="75dp"
-            android:layout_height="40dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
-            android:onClick="onClick"
-            android:text="@string/app_stop" />
+            android:layout_marginTop="9dp"
+            android:contentDescription="@string/app_stop" />
     
     </RelativeLayout>
 

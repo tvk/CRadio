@@ -36,7 +36,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="12dp"
             android:onClick="onClick"
             android:text="@string/app_stop" />
         
@@ -117,15 +117,15 @@
 
             <ImageButton style="@style/presetButton"
 	            android:contentDescription="@string/app_preset_button_1"
-                android:id="@+id/buttonStation1" />
+                android:id="@+id/buttonStation1" android:src="@drawable/button_1_selector" />
 
             <ImageButton style="@style/presetButton"
 	            android:contentDescription="@string/app_preset_button_2"
-                android:id="@+id/buttonStation2" />
+                android:id="@+id/buttonStation2" android:src="@drawable/button_2_selector" />
 
             <ImageButton style="@style/presetButton"
 	            android:contentDescription="@string/app_preset_button_3"
-                android:id="@+id/buttonStation3" />
+                android:id="@+id/buttonStation3" android:src="@drawable/button_3_selector" />
             
         </TableRow>
 
@@ -137,15 +137,15 @@
 
             <ImageButton style="@style/presetButton"
 	            android:contentDescription="@string/app_preset_button_4"
-                android:id="@+id/buttonStation4" />
+                android:id="@+id/buttonStation4" android:src="@drawable/button_4_selector" />
 
             <ImageButton style="@style/presetButton"
 	            android:contentDescription="@string/app_preset_button_5"
-                android:id="@+id/buttonStation5" />
+                android:id="@+id/buttonStation5" android:src="@drawable/button_5_selector" />
 
             <ImageButton style="@style/presetButton"
 	            android:contentDescription="@string/app_preset_button_6"
-                android:id="@+id/buttonStation6" />
+                android:id="@+id/buttonStation6" android:src="@drawable/button_6_selector" />
             
         </TableRow>
         
