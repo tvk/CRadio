@@ -55,6 +55,18 @@ public class GenreService
 	
 	public GenreService()
 	{
+		Executors.newFixedThreadPool(1).execute(new Runnable() {
+			
+			@Override
+			public void run()
+			{
+				GenreService.this.init();
+			}
+		});
+	}
+	
+	private synchronized void init()
+	{
 		try
 		{
 			Log.d(GenreService.class.toString(), "Loading genres");
@@ -64,14 +76,7 @@ public class GenreService
 				this.genres.add(line);
 			Log.d(GenreService.class.toString(), "Loaded " + this.genres.size() + " genres");
 			
-			Executors.newFixedThreadPool(1).execute(new Runnable() {
-				
-				@Override
-				public void run()
-				{
-					GenreService.this.loadGenreItems(GenreService.this.genres.get(0));
-				}
-			});
+			GenreService.this.loadGenreItems(GenreService.this.genres.get(0));
 		}
 		catch (final Exception e)
 		{

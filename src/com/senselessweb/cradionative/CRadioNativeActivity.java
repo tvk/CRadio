@@ -63,6 +63,7 @@ public class CRadioNativeActivity extends Activity
     @Override
     protected void onDestroy()
     {
+    	this.radio.onDestroy();
     	super.onDestroy();
     	this.unregisterReceiver(this.broadcastReceiver);
     }

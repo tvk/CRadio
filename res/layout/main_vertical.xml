@@ -29,16 +29,13 @@
             android:text="@string/app_welcome"
             android:typeface="monospace" />
 
-        <Button
-            android:id="@+id/buttonTogglePlay"
-            android:layout_width="75dp"
-            android:layout_height="40dp"
+        <ImageButton style="@style/stopButton"
+        	android:id="@+id/buttonTogglePlay"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="20dp"
             android:layout_marginTop="12dp"
-            android:onClick="onClick"
-            android:text="@string/app_stop" />
+            android:contentDescription="@string/app_stop" />
         
     </RelativeLayout>
 

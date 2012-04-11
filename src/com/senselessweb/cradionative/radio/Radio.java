@@ -199,6 +199,12 @@ public class Radio implements OnPreparedListener, OnErrorListener
 	{
 		return (ImageButton) this.activity.findViewById(R.id.buttonTogglePlay);		
 	}
+
+	public void onDestroy()
+	{
+		this.stop();
+		this.mediaPlayer.release();
+	}
 }
 
 
